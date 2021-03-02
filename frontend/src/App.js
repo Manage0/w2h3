@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react' 
 import axios from 'axios'
+import Main from './mainPage'
+import PublicData from './publicData'
+import { Redirect, Route, Switch } from "react-router-dom";
 
-import logo from './logo.svg'
 import './App.css'
 
-const App = () => {
+function App()  {
   const [connected, setConnected] = useState(false)
   const [error, setError] = useState()
 
@@ -23,20 +25,15 @@ const App = () => {
   }, [])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {error ? (
-          <p style={{ color: 'red' }}>{error}</p>
-        ) : (
-          <p>
-            Connection to backend: <br />
-            {connected ? 'OK' : 'Loading'}
-          </p>
-        )}
-      </header>
-    </div>
-  )
+    <Switch>
+      <Route exact path="/">
+            <Main />
+      </Route>
+      <Route exact path="/public">
+            <PublicData />
+      </Route>
+    </Switch>
+  );
 }
 
 export default App

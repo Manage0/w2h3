@@ -1,0 +1,21 @@
+img{
+    width: 50%;
+    height: 50%;
+}
+
+.login{
+    display: inline-block;
+}
+
+#login{
+    padding: auto;
+    margin: auto;
+}
+
+#mainTxt{
+    padding: 15px;
+}
+
+Link{
+    text-decoration: none;
+}
