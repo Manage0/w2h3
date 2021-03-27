@@ -3,9 +3,6 @@ import {Link} from 'react-router-dom'
 
 const Main =()=>
 {
-
-
-
     return(
         <div>
             <img class='login' src='https://cdn.shopify.com/s/files/1/0077/8027/0133/files/Black_Eye_600p.png?height=628&pad_color=fff&v=1575250533&width=1200' alt='Logo' title='logo'/>
@@ -22,6 +19,20 @@ const Main =()=>
             <button type="button">Login</button> 
             <br/>
             <Link to='./public'>Public data</Link>
+            </div>
+            <div>
+                Register Username
+                <br/>
+            <label for="usernameReg">Username:</label>
+            <br/>
+            <input type="text" id="usernameReg" name="usernameReg"/>
+            <br/>
+            <label for="passwordReg">Password:</label>
+            <br/>
+            <input type="text" id="passwordReg" name="passwordReg"/>
+            <br/>
+            <button type="button">Register</button> 
+            <br/>
             </div>
             <br/>
             <div id='mainTxt'>
