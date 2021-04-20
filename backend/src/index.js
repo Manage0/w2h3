@@ -1,3 +1,5 @@
+//mongodb stuff -> 3ea min 52 perc
+//Az alkalmazásban lehetőség van felhasználók kezelésére (bejelentkezés, ...)
 import express from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
