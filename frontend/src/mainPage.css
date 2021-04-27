@@ -5,6 +5,20 @@ img{
 
 .login{
     display: inline-block;
+    padding:5px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.register{
+    display: inline-block;
+    text-align: center;
+    padding:5px;
+}
+
+.publicdata{
+    padding:5px;
+    text-align: center;
 }
 
 #login{
