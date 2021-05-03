@@ -3,12 +3,33 @@ import {Link} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
+var letMeTrough = false
+var tokenForAxios
+
 const Main =()=>
 {
     const [connected, setConnected] = useState(false)
     const [hbMess2, setHbMess2] = useState('no connection for you m8')
     const [login, setLogin] = useState("not logged in")
     const [register, setRegister] =useState("not registered")
+    const [username, setUsername] =useState()
+    const [password, setPassword] =useState()
+    const [token, setToken] = useState()
+    const [init, setInit] = useState(false)
+    const [loggedIn, setLoggedIn]= useState()
+
+    useEffect(()=>{
+      const initialize = async () => {
+        setInit(true)
+        const {data:{csrfToken}} = await axios.get('/api/csrf-protection')
+        axios.defaults.headers.post['X-CSRF-TOKEN'] = csrfToken
+        axios.defaults.headers.put['X-CSRF-TOKEN'] = csrfToken
+        axios.defaults.headers.delete['X-CSRF-TOKEN'] = csrfToken
+      }
+      if(!init){
+        initialize()
+      }
+    })
 
     useEffect(() => {
         const getData = async () => {
@@ -27,10 +48,22 @@ const Main =()=>
 
     const Login = async ()=>{
         try {
+          console.log(username, password)
             const {
-              data: { msg },
-            } = await axios.post('/api/login')
+              data: { msg, success },
+            } = await axios.post('/api/login',{
+              username,
+              password
+            })
             setLogin(msg)
+            setToken(msg)
+            if(success){
+            console.log(letMeTrough)
+            letMeTrough=true
+            console.log(letMeTrough)
+          }
+            axios.defaults.headers.authorization=`Bearer ${msg}`
+            tokenForAxios=`Bearer ${msg}`
           } catch (error) {
             console.log(error.message)
           }
@@ -40,16 +73,38 @@ const Main =()=>
       try {
           const {
             data: { msg },
-          } = await axios.post('/api/register')
+          } = await axios.post('/api/register',{
+            username,
+            password
+          })
           setRegister(msg)
         } catch (error) {
           console.log(error.message)
         }
   }
 
+  const CheckLogin = async ()=>{
+    try {
+        const {
+          data: { msg },
+        } = await axios.get('/api/checklogin',{
+          username,
+          password
+        })
+        setRegister(msg)
+      } catch (error) {
+        console.log(error.message)
+      }
+}
+
+const SetupUserName=(e)=>{
+  setUsername(e.target.value)
+}
+
+
     return(
         <div>
-            <div>
+           <div>
                 connection: {hbMess2}
                 <br/>
                 login: {login}
@@ -62,11 +117,11 @@ const Main =()=>
                 <br/>
             <label for="username">Username:</label>
             <br/>
-            <input type="text" id="username" name="username"/>
+            <input type="text" id="username" name="username" onChange={(e)=>SetupUserName(e)}/>
             <br/>
             <label for="password">Password:</label>
             <br/>
-            <input type="text" id="password" name="password"/>
+            <input type="password" id="password" name="password" onChange={(e)=>setPassword(e.target.value)}/>
             <br/>
             <button type="button" onClick={Login}>Login</button> 
             <br/>
@@ -76,23 +131,21 @@ const Main =()=>
                 <br/>
             <label for="usernameReg">Username:</label>
             <br/>
-            <input type="text" id="usernameReg" name="usernameReg"/>
+            <input type="text" id="usernameReg" name="usernameReg" onChange={(e)=>(setUsername(e.target.value))}/>
             <br/>
             <label for="passwordReg">Password:</label>
             <br/>
-            <input type="text" id="passwordReg" name="passwordReg"/>
+            <input type="password" id="passwordReg" name="passwordReg" onChange={(e)=>setPassword(e.target.value)}/>
             <br/>
             <button type="button" onClick={Register}>Register</button> 
             <br/>
+            <button type="button" onClick={CheckLogin}>Check login</button> 
             </div>
             <br/>
             <div class="publicdata">
             <Link to='./public'>Public data</Link>
             <br/>
-            {
-              //oldd meg, hogy a login után menjen
-            }
-            <Link to='./membersndues'>Members and dues</Link>
+            <Link to='./membersndues'>After login</Link>
             </div>
             <div id='mainTxt'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tincidunt augue, pellentesque consectetur velit euismod congue. Aenean placerat lacus eu fringilla maximus. Donec enim ipsum, sagittis ac ultrices eu, molestie et felis. Donec eu ex nec mauris consequat euismod quis in tortor. Sed sagittis pharetra massa, ut laoreet erat venenatis in. Pellentesque commodo, turpis in vehicula condimentum, tellus sapien ornare massa, vitae tristique eros ante id mauris. Morbi a nulla non sapien fringilla malesuada.
@@ -103,4 +156,7 @@ const Main =()=>
     )
 }
 
+export{letMeTrough}
+export{tokenForAxios}
 export default Main
+

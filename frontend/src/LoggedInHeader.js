@@ -8,6 +8,7 @@ const LoggedInHeader = () =>{
             <Link to='./sensitivedata'>Sensitive Data</Link>
             <Link to='./nextmeeting'>Next Meeting</Link>
             <Link to='./gallery'>Gallery</Link>
+            <Link to='./'>Main Page</Link>
         </div>
     )
 }
