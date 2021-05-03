@@ -5,6 +5,7 @@ import axios from 'axios'
 
 var letMeTrough = false
 var tokenForAxios
+var outerUsername
 
 const Main =()=>
 {
@@ -55,6 +56,7 @@ const Main =()=>
               username,
               password
             })
+            outerUsername=username
             setLogin(msg)
             setToken(msg)
             if(success){
@@ -156,6 +158,7 @@ const SetupUserName=(e)=>{
     )
 }
 
+export{outerUsername}
 export{letMeTrough}
 export{tokenForAxios}
 export default Main
