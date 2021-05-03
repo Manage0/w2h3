@@ -1,15 +1,5 @@
-# web2-template
+# Very Secret Company 
 
-To start the project
-1. copy `backend/.env.temp` to `backend/.env` and fill in the data in `backend/.env`
+/servertime
 
-```bash
-cp backend/.env.temp backend/.env
-```
-
-2. And run
-
-```bash
-npm install
-npm run start
-```
+-get: Returns the current time on the server like "2021-05-03T13:10:50.251Z"

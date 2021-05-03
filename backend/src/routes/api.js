@@ -2,6 +2,7 @@ import pkg from 'express'
 import mongoose from 'mongoose'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 
 const {Router}=pkg
 const router = Router()
@@ -15,14 +16,16 @@ const userSchema= new mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema)
 
-router.get('/heartbeat', async (req, res) => {
-  res.json({ connection: 'true' , hbMess: 'connected!'})
+router.get('/servertime', async (req, res) => {
+  var time= moment().local()
+  res.json({ time: time})
 })
 
 router.post('/login', async (req, res, next) => {
   console.log("someone is trying to log in")
   const {username, password} = req.body
   //külön fgv, check username, checkpassword
+  console.log(username)
   const user = await User.findOne({username}).select('+password')
   if(!user){
     res.json({msg: 'No such user'})
@@ -75,20 +78,47 @@ router.get('/checklogin', authMW, async (req, res, next)=>{
   res.json({msg: "Login Checked"})
 })
 
-router.get('/membersndues', authMW, async (req, res, next)=>{
-  res.json({msg: "get on membersndues working"})
+router.post('/membersndues', authMW, async (req, res, next)=>{
+  const{user}=req.body
+  console.log("request body: ")
+  console.log(req.body)
+  console.log(user)
+  const userFromDB = await User.findOne({username:user}).select('+payed')
+  //console.log(userFromDB)
+  console.log(userFromDB.payed)
+  var response = (userFromDB.payed)
+  res.json({msg: response})
+  next()
 })
 
 router.put('/pay', authMW, async (req, res, next)=>{
-  var{payed}=req.body
-  console.log("the got payed is: "+payed)
-  if(payed===true){
-    payed=false
+  const{user}=req.body
+  console.log("request body: ")
+  console.log(req.body)
+  console.log(user)
+  const userFromDB = await User.findOne({username:user}).select('+payed')
+  if(userFromDB.payed===true){
+    await User.findOneAndUpdate({username:user, payed:false})
   } else{
-    payed=true
+    await User.findOneAndUpdate({username:user, payed:true})
   }
-  console.log("Pay to return is: "+payed)
-  res.json({msg: payed})
+  const userFromDB2 = await User.findOne({username:user}).select('+payed')
+  console.log("Pay to return is: "+userFromDB2.payed)
+  res.json({msg: userFromDB2.payed})
+  next()
+})
+
+
+router.delete('/deleteme', authMW, async (req, res, next)=>{
+  const{user}=req.body
+  console.log("request body: ")
+  console.log(req.body)
+  console.log(user)
+  const userFromDB = await User.findOneAndDelete({username:user})
+  console.log(userFromDB)
+  const userFromDB2 = await User.findOne({username:user}).select('+payed')
+  console.log(userFromDB2)
+  res.json({msg: "successfully"})
   next()
 })
 

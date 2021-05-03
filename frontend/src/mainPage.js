@@ -9,15 +9,12 @@ var outerUsername
 
 const Main =()=>
 {
-    const [connected, setConnected] = useState(false)
-    const [hbMess2, setHbMess2] = useState('no connection for you m8')
+  const [serverTime, setServerTime] = useState("Time from server is loading...")
     const [login, setLogin] = useState("not logged in")
     const [register, setRegister] =useState("not registered")
     const [username, setUsername] =useState()
     const [password, setPassword] =useState()
-    const [token, setToken] = useState()
     const [init, setInit] = useState(false)
-    const [loggedIn, setLoggedIn]= useState()
 
     useEffect(()=>{
       const initialize = async () => {
@@ -33,19 +30,18 @@ const Main =()=>
     })
 
     useEffect(() => {
-        const getData = async () => {
-          try {
-            const {
-              data: { connection, hbMess },
-            } = await axios.get('/api/heartbeat')
-            setConnected(connection)
-            setHbMess2(hbMess)
-          } catch (error) {
-            console.log(error.message)
-          }
+      const getData = async () => {
+        try {
+          const {
+            data: { time }
+          } = await axios.get('/api/servertime')
+          setServerTime(time)
+        } catch (error) {
+          console.log(error.message)
         }
-        getData()
-      }, [hbMess2])
+      }
+      getData()
+    }, [])
 
     const Login = async ()=>{
         try {
@@ -58,7 +54,6 @@ const Main =()=>
             })
             outerUsername=username
             setLogin(msg)
-            setToken(msg)
             if(success){
             console.log(letMeTrough)
             letMeTrough=true
@@ -107,11 +102,12 @@ const SetupUserName=(e)=>{
     return(
         <div>
            <div>
-                connection: {hbMess2}
-                <br/>
                 login: {login}
                 <br/>
                 register: {register}
+            </div>
+            <div class='serverHeader'>
+              Current time on the server when moving to the page: {serverTime}
             </div>
             <img class='login' src='https://cdn.shopify.com/s/files/1/0077/8027/0133/files/Black_Eye_600p.png?height=628&pad_color=fff&v=1575250533&width=1200' alt='Logo' title='logo'/>
             <div class='login' id='login'>
