@@ -2,6 +2,7 @@ import './mainPage.css'
 import {Link} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
+import Black_Eye_600p from './images/Black_Eye_600p.webp'
 
 var letMeTrough = false
 var tokenForAxios
@@ -104,7 +105,8 @@ const SetupUserName=(e)=>{
             <div class='serverHeader'>
               Current time on the server when moving to the page: {serverTime}
             </div>
-            <img class='login' src='https://cdn.shopify.com/s/files/1/0077/8027/0133/files/Black_Eye_600p.png?height=628&pad_color=fff&v=1575250533&width=1200' alt='Logo' title='logo'/>
+            Do it with React lazy
+            <img class='login' src={Black_Eye_600p} alt='Logo' title='logo' type="image/webp" />
             <div class='login' id='login'>
             Log in Here!
                 <br/>
