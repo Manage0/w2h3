@@ -4,6 +4,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import path from "path"
 
 import api from './routes/api.js'
 import cookieParser from 'cookie-parser'
@@ -24,6 +25,7 @@ const csrfProtection=csrf({
 app.use(csrfProtection)
 
 app.use('/api', api)
+app.use('/api/files', express.static(path.join(path.dirname('.'),'download')));
 
 const { DB_USER, DB_PASSWORD, DB_URL, DB_NAME, PORT } = process.env
 

@@ -3,6 +3,13 @@ import mongoose from 'mongoose'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
+import express from 'express'
+import path from 'path'
+import fs from 'fs'
+
+/*
+TODO: download on public and sensitive data, refactor authorization (not letmetrough), readme, gallery -> load img from (backend?, bár ez lehet vmi random netes cucc is), 1-1 pofozgatás
+*/
 
 const {Router}=pkg
 const router = Router()
@@ -153,14 +160,6 @@ router.delete('/deleteme', authMW, async (req, res, next)=>{
   console.log(userFromDB2)
   res.json({msg: "successfully"})
   next()
-})
-
-router.get('/download1', async (req, res) => {
-  res.json({msg: "yup"})
-})
-
-router.get('/download2', async (req, res) => {
-  res.json({msg: "yup"})
 })
 
 router.get('/csrf-protection', async (req, res) => {

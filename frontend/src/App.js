@@ -17,6 +17,9 @@ function App()  {
      <PrivateRoute exact path="/sensitivedata" component={SensitveData}/>
      <PrivateRoute exact path="/nextmeeting" component={NextMeeting}/>
      <PrivateRoute exact path="/gallery" component={Gallery}/>
+     <Route exact path="/cutedoggo.jpg">
+
+     </Route>
       <Route exact path="/">
             <Main />
       </Route>

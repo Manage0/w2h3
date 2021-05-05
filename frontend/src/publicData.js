@@ -9,10 +9,13 @@ const PublicData=()=>{
 
     const DownloadFirst = async ()=>{
         try {
-            const {
-            data: { msg },
-            } = await axios.get('/api/download1')
-            setdown1(msg)
+            /*const {
+            data: { file },
+            } = */
+            await axios.get('/api/download1')
+            //setdown1(file)
+            //console.log(down1)
+            console.log("dload1")
         } catch (error) {
             console.log(error.message)
         }
@@ -31,11 +34,6 @@ const PublicData=()=>{
 
     return(
         <div align="center">
-            <div>
-                down1:{down1}
-                <br/>
-                down2:{down2}
-            </div>
             Public Data
             <br/>
             <Link to='./'>Back</Link>
@@ -46,7 +44,7 @@ const PublicData=()=>{
                         First public data
                     </td>
                     <td>
-                        <button onClick={DownloadFirst}>Download</button>
+                        <a href="/api/files/cutedoggo.jpg" download>dload</a>
                     </td>
                 </tr>
                 <tr>
@@ -54,7 +52,7 @@ const PublicData=()=>{
                         Second public data
                     </td>
                     <td>
-                        <button onClick={DownloadSecond}>Download</button>
+                    <a href="/api/files/snowymou.jpg" download>dload</a>
                     </td>
                 </tr>
             </table>

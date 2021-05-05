@@ -101,11 +101,6 @@ const SetupUserName=(e)=>{
 
     return(
         <div>
-           <div>
-                login: {login}
-                <br/>
-                register: {register}
-            </div>
             <div class='serverHeader'>
               Current time on the server when moving to the page: {serverTime}
             </div>
