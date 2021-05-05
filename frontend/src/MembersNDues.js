@@ -1,13 +1,47 @@
 import axios from "axios"
-import { useState } from "react"
-import { Redirect } from "react-router"
+import { useEffect, useState } from "react"
 import LoggedInHeader from "./LoggedInHeader"
 import {tokenForAxios, outerUsername} from "./mainPage"
+import {trigger} from "./LoggedInHeader"
 
 const MembersNDues = () =>{
 
+  const [newsToDisplay, setNewsToDisplay] = useState()
+
+
+  useEffect(() => {
+    const getData = async () => {
+      console.log("trigger is: "+trigger)
+      try {
+        const {
+          data: { response, news }
+        } = await axios.post('/api/news', {user:outerUsername})
+        console.log(response)
+        console.log(news.news)
+        setNewsToDisplay(news.news)
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+    getData()
+  }, [trigger])
+
     const [payed, setPayed] = useState(false)
     const [deleted, setDeleted] = useState(false)
+
+    const GenerateNews=async()=>{
+        try {
+            const {
+              data: { msg },
+            } = await axios.post('/api/generatenews',{
+              user: "user"
+            })
+            setPayed(msg)
+            console.log(msg)
+          } catch (error) {
+            console.log(error.message)
+          }
+    }
 
     const LoadPayed = async ()=>{
         console.log(outerUsername)
@@ -61,7 +95,8 @@ const SwitchPayed=() => {
             console.log("delete gone")
             setDeleted(msg)
             console.log("returned value is: "+msg)
-            window.location = "http://localhost:3000/";
+            var homeURL = window.location.href.slice(0, window.location.href.length-12)
+            window.location = homeURL;
         } catch (error) {
             console.log("delete not working")
             console.log(error.message)
@@ -70,6 +105,14 @@ const SwitchPayed=() => {
     getData()
   }
 
+
+  function writeNews(news) {
+    return (
+      <div>
+        {news}
+      </div>
+    );
+  }
     return(
         <div>
             <LoggedInHeader/>
@@ -82,6 +125,10 @@ const SwitchPayed=() => {
             username: {outerUsername}
             <button onClick={LoadPayed}>LoadPayed</button>
             <button onClick={DeleteMe}>Delete me</button>
+            <button onClick={GenerateNews}>Generate News</button>
+            <div>
+              {newsToDisplay?newsToDisplay.map(writeNews):"No news found"}
+            </div>
 
         </div>
     )

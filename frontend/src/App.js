@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react' 
-import axios from 'axios'
+import React from 'react' 
 import Main from './mainPage'
 import PublicData from './publicData'
 import MembersNDues from './MembersNDues'
@@ -12,25 +11,6 @@ import './App.css'
 import Gallery from './Gallery'
 
 function App()  {
-  const [connected, setConnected] = useState(false)
-  const [error, setError] = useState()
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const {
-          data: { connection, hbMess },
-        } = await axios.get('/api/heartbeat')
-        setConnected(connection)
-        console.log(hbMess)
-      } catch (error) {
-        setError(error.message)
-      }
-    }
-    getData()
-  },[])
-
   return (
     <Switch>
      <PrivateRoute exact path="/membersndues" component={MembersNDues}/>

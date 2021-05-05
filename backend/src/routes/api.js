@@ -16,9 +16,28 @@ const userSchema= new mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema)
 
+const newsSchema= new mongoose.Schema({
+  username:{type: String, unique: true, index:true, required: true, trim: true},
+  news:{type: Array}
+})
+const News = mongoose.model('News', newsSchema)
+
+router.post('/generatenews', async (req, res) => {
+  console.log("generating news...")
+  await News.create({username:"test", news:["asd","asdq","asdqasd"]})
+})
+
+router.post('/news', async (req, res) => {
+  const {user} = req.body
+  console.log(user)
+  const responses = await News.findOne({username:user})
+  var response = "got the news "+user
+  res.send({ response: response, news: responses })
+})
+
 router.get('/servertime', async (req, res) => {
   var time= moment().local()
-  res.json({ time: time})
+  res.send({ time: time})
 })
 
 router.post('/login', async (req, res, next) => {
@@ -79,6 +98,20 @@ router.get('/checklogin', authMW, async (req, res, next)=>{
 })
 
 router.post('/membersndues', authMW, async (req, res, next)=>{
+  const{user}=req.body
+  console.log("request body: ")
+  console.log(req.body)
+  console.log(user)
+  const userFromDB = await User.findOne({username:user}).select('+payed')
+  //console.log(userFromDB)
+  console.log(userFromDB.payed)
+  var response = (userFromDB.payed)
+  res.json({msg: response})
+  next()
+})
+
+
+router.post('/newsForAPerson', authMW, async (req, res, next)=>{
   const{user}=req.body
   console.log("request body: ")
   console.log(req.body)
