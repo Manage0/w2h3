@@ -63,7 +63,7 @@ router.post('/login', async (req, res, next) => {
       next("Wrong password")
     } else{
           const token = await jwt.sign({userId: user.id},TOKEN_SECRET,{
-      expiresIn: '1h'
+      expiresIn: '1m'
     })
     res.cookie('auth', token, {httpOnly:true})
     res.json({msg: token, success:true})
@@ -101,7 +101,7 @@ const authMW =async(req, res, next)=>{
 }
 
 router.get('/checklogin', authMW, async (req, res, next)=>{
-  res.json({msg: "Login Checked"})
+  res.json({msg: true})
 })
 
 router.post('/membersndues', authMW, async (req, res, next)=>{

@@ -1,22 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Redirect, Route} from "react-router-dom"
-import {letMeTrough} from "./mainPage"
+import axios from 'axios'
 
-//letmetraough helyett token az axiosban, ha az valid, akkor mehet
 
-export const PrivateRoute=({
-    component: Component, ...rest
-}) =>(
-    <Route {...rest}
-    render={props=>
-   letMeTrough?
-(
-<Component {...props}/>)
-:
-(
-    <Redirect
-    to={{pathname: "/",
-state:{from:props.location}}}
-/>
-)}></Route>
-)
+var message =false
+
+const CheckLogin = async ()=>{
+    message =false
+    try {
+        const {
+          data: { msg }
+        } = await axios.get('/api/checklogin')
+        message=msg
+      } catch (error) {
+        console.log(error.message)
+      }
+    console.log("message: "+message)
+}
+
+const PrivateRoute=({component: Component, ...rest}) =>(
+    <Route {...rest} render={props=>message?(<Component {...props}/>):(<Redirect to={{pathname: "/",state:{from:props.location}}}/>)}></Route>
+    )
+
+export {PrivateRoute}
+export {CheckLogin}
+

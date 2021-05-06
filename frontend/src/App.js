@@ -4,13 +4,17 @@ import PublicData from './publicData'
 import MembersNDues from './MembersNDues'
 import SensitveData from './SensitiveData'
 import NextMeeting from './NextMeeting'
-import {PrivateRoute} from './PrivateRoute'
+import {PrivateRoute, CheckLogin} from './PrivateRoute'
 import { Redirect, Route, Switch } from "react-router-dom";
+import {useEffect} from 'react'
 
 import './App.css'
 import Gallery from './Gallery'
 
 function App()  {
+  useEffect(()=>{
+    CheckLogin()
+})
   return (
     <Switch>
      <PrivateRoute exact path="/membersndues" component={MembersNDues}/>

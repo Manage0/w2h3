@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import LoggedInHeader from "./LoggedInHeader"
 import {tokenForAxios, outerUsername} from "./mainPage"
 import {trigger} from "./LoggedInHeader"
+import {CheckLogin} from './PrivateRoute'
 
 const MembersNDues = () =>{
 
@@ -10,6 +11,7 @@ const MembersNDues = () =>{
 
 
   useEffect(() => {
+    CheckLogin()
     const getData = async () => {
       console.log("trigger is: "+trigger)
       try {

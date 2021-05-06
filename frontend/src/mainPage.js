@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {Suspense, useEffect, useState} from 'react'
 import axios from 'axios'
 import React from 'react'
+import {CheckLogin} from './PrivateRoute'
 const Black_Eye= React.lazy(() => import('./images/Black_Eye'));
 
 var letMeTrough = false
@@ -29,6 +30,7 @@ const Main =()=>
       if(!init){
         initialize()
       }
+      CheckLogin()
     })
 
     useEffect(() => {
@@ -81,20 +83,6 @@ const Main =()=>
           console.log(error.message)
         }
   }
-
-  const CheckLogin = async ()=>{
-    try {
-        const {
-          data: { msg },
-        } = await axios.get('/api/checklogin',{
-          username,
-          password
-        })
-        setRegister(msg)
-      } catch (error) {
-        console.log(error.message)
-      }
-}
 
 const SetupUserName=(e)=>{
   setUsername(e.target.value)
