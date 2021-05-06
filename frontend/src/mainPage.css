@@ -1,6 +1,13 @@
+body{
+    background-color:#9990AE;
+    color: #4a453c;
+}
+
 img{
     width: 50%;
     height: 50%;
+    border-width: 5px;
+    border: solid;
 }
 
 .login{
@@ -24,10 +31,12 @@ img{
 #login{
     padding: auto;
     margin: auto;
+    max-width: fit-content;
 }
 
 #mainTxt{
     padding: 15px;
+    min-width: fit-content;
 }
 
 Link{

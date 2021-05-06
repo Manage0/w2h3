@@ -1,8 +1,9 @@
 import './mainPage.css'
 import {Link} from 'react-router-dom'
-import {useEffect, useState} from 'react'
+import {Suspense, useEffect, useState} from 'react'
 import axios from 'axios'
-import Black_Eye_600p from './images/Black_Eye_600p.webp'
+import React from 'react'
+const Black_Eye= React.lazy(() => import('./images/Black_Eye'));
 
 var letMeTrough = false
 var tokenForAxios
@@ -105,8 +106,9 @@ const SetupUserName=(e)=>{
             <div class='serverHeader'>
               Current time on the server when moving to the page: {serverTime}
             </div>
-            Do it with React lazy
-            <img class='login' src={Black_Eye_600p} alt='Logo' title='logo' type="image/webp" />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Black_Eye />
+            </Suspense>
             <div class='login' id='login'>
             Log in Here!
                 <br/>
