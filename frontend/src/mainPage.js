@@ -103,40 +103,42 @@ const SetupUserName=(e)=>{
 
     return(
         <div>
-            <div class='serverHeader'>
-              Current time on the server when moving to the page: {serverTime}
+            <div id='serverHeader'>
+              Time on the server when loading the page: {serverTime}
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Black_Eye />
-            </Suspense>
-            <div class='login' id='login'>
-            Log in Here!
+            <div align="right">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Black_Eye />
+              </Suspense>
+              <div class='login' id='login'>
+                <h1>Log in Here!</h1>
                 <br/>
-            <label for="username">Username:</label>
-            <br/>
-            <input type="text" id="username" name="username" onChange={(e)=>SetupUserName(e)}/>
-            <br/>
-            <label for="password">Password:</label>
-            <br/>
-            <input type="password" id="password" name="password" onChange={(e)=>setPassword(e.target.value)}/>
-            <br/>
-            <button type="button" onClick={Login}>Login</button> 
-            <br/>
-            </div>
-            <div class="register">
-                Register Here!
+                <label for="username">Username:</label>
                 <br/>
-            <label for="usernameReg">Username:</label>
-            <br/>
-            <input type="text" id="usernameReg" name="usernameReg" onChange={(e)=>(setUsername(e.target.value))}/>
-            <br/>
-            <label for="passwordReg">Password:</label>
-            <br/>
-            <input type="password" id="passwordReg" name="passwordReg" onChange={(e)=>setPassword(e.target.value)}/>
-            <br/>
-            <button type="button" onClick={Register}>Register</button> 
-            <br/>
-            <button type="button" onClick={CheckLogin}>Check login</button> 
+                <input placeholder="Enter username here..." type="text" id="username" name="username" onChange={(e)=>SetupUserName(e)}/>
+                <br/>
+                <label for="password">Password:</label>
+                <br/>
+                <input placeholder="Enter password here..." type="password" id="password" name="password" onChange={(e)=>setPassword(e.target.value)}/>
+                <br/>
+                <button type="button" onClick={Login}>Login</button> 
+                <br/>
+              </div>
+              <div class="register">
+                  <h1>Register Here!</h1>
+                  <br/>
+              <label for="usernameReg">Username:</label>
+              <br/>
+              <input placeholder="Enter username here..." type="text" id="usernameReg" name="usernameReg" onChange={(e)=>(setUsername(e.target.value))}/>
+              <br/>
+              <label for="passwordReg">Password:</label>
+              <br/>
+              <input placeholder="Enter password here..." type="password" id="passwordReg" name="passwordReg" onChange={(e)=>setPassword(e.target.value)}/>
+              <br/>
+              <button type="button" onClick={Register}>Register</button> 
+              <br/>
+              <button type="button" onClick={CheckLogin}>Check login</button> 
+              </div>
             </div>
             <br/>
             <div class="publicdata">

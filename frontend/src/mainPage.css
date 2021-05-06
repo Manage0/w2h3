@@ -1,6 +1,19 @@
 body{
-    background-color:#9990AE;
-    color: #4a453c;
+    color: white;
+    background-image: url('./images/background.jpg');
+    font-size: large;
+}
+
+button{
+    border: 5px wheat dotted;
+    background-color: teal;
+    font-size: large;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    font-size: larger;
 }
 
 img{
@@ -43,10 +56,11 @@ Link{
     text-decoration: none;
 }
 
-.serverHeader{
+#serverHeader{
     text-align: right;
     padding-top: 5px;
     padding-bottom: 5px;
     background-color: #260716;
     color: #29e085;
+    font-weight: 100;
 }
