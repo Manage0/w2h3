@@ -1,20 +1,16 @@
 import './mainPage.css'
 import {Link} from 'react-router-dom'
-import {Suspense, useEffect, useState} from 'react'
+import React, {Suspense, useEffect, useState} from 'react'
 import axios from 'axios'
-import React from 'react'
 import {CheckLogin} from './PrivateRoute'
 const Black_Eye= React.lazy(() => import('./images/Black_Eye'));
 
-var letMeTrough = false
 var tokenForAxios
 var outerUsername
 
 const Main =()=>
 {
   const [serverTime, setServerTime] = useState("Time from server is loading...")
-    const [login, setLogin] = useState("not logged in")
-    const [register, setRegister] =useState("not registered")
     const [username, setUsername] =useState()
     const [password, setPassword] =useState()
     const [init, setInit] = useState(false)
@@ -51,18 +47,12 @@ const Main =()=>
         try {
           console.log(username, password)
             const {
-              data: { msg, success },
+              data: { msg },
             } = await axios.post('/api/login',{
               username,
               password
             })
             outerUsername=username
-            setLogin(msg)
-            if(success){
-            console.log(letMeTrough)
-            letMeTrough=true
-            console.log(letMeTrough)
-          }
             axios.defaults.headers.authorization=`Bearer ${msg}`
             tokenForAxios=`Bearer ${msg}`
           } catch (error) {
@@ -72,22 +62,14 @@ const Main =()=>
 
     const Register = async ()=>{
       try {
-          const {
-            data: { msg },
-          } = await axios.post('/api/register',{
+          await axios.post('/api/register',{
             username,
             password
           })
-          setRegister(msg)
         } catch (error) {
           console.log(error.message)
         }
   }
-
-const SetupUserName=(e)=>{
-  setUsername(e.target.value)
-}
-
 
     return(
         <div>
@@ -103,13 +85,13 @@ const SetupUserName=(e)=>{
                 <br/>
                 <label for="username">Username:</label>
                 <br/>
-                <input placeholder="Enter username here..." type="text" id="username" name="username" onChange={(e)=>SetupUserName(e)}/>
+                <input placeholder="Enter username here..." type="text" id="username" name="username" onChange={(e)=>setUsername(e.target.value)}/>
                 <br/>
                 <label for="password">Password:</label>
                 <br/>
                 <input placeholder="Enter password here..." type="password" id="password" name="password" onChange={(e)=>setPassword(e.target.value)}/>
                 <br/>
-                <button type="button" onClick={Login}>Login</button> 
+                <button type="button" onClick={Login}>Login (Should be clicked twice)</button> 
                 <br/>
               </div>
               <div class="register">
@@ -124,8 +106,6 @@ const SetupUserName=(e)=>{
               <input placeholder="Enter password here..." type="password" id="passwordReg" name="passwordReg" onChange={(e)=>setPassword(e.target.value)}/>
               <br/>
               <button type="button" onClick={Register}>Register</button> 
-              <br/>
-              <button type="button" onClick={CheckLogin}>Check login</button> 
               </div>
             </div>
             <br/>
@@ -144,7 +124,6 @@ const SetupUserName=(e)=>{
 }
 
 export{outerUsername}
-export{letMeTrough}
 export{tokenForAxios}
 export default Main
 

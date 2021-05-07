@@ -3,13 +3,6 @@ import mongoose from 'mongoose'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
-import express from 'express'
-import path from 'path'
-import fs from 'fs'
-
-/*
-TODO: download on public and sensitive data, refactor authorization (not letmetrough), readme, gallery -> load img from (backend?, bár ez lehet vmi random netes cucc is), 1-1 pofozgatás
-*/
 
 const {Router}=pkg
 const router = Router()
@@ -28,18 +21,14 @@ const newsSchema= new mongoose.Schema({
   news:{type: Array}
 })
 const News = mongoose.model('News', newsSchema)
-
 router.post('/generatenews', async (req, res) => {
-  console.log("generating news...")
   await News.create({username:"test", news:["asd","asdq","asdqasd"]})
 })
 
 router.post('/news', async (req, res) => {
   const {user} = req.body
-  console.log(user)
-  const responses = await News.findOne({username:user})
-  var response = "got the news "+user
-  res.send({ response: response, news: responses })
+  const response = await News.findOne({username:user})
+  res.send({news: response.news })
 })
 
 router.get('/servertime', async (req, res) => {
@@ -48,10 +37,7 @@ router.get('/servertime', async (req, res) => {
 })
 
 router.post('/login', async (req, res, next) => {
-  console.log("someone is trying to log in")
   const {username, password} = req.body
-  //külön fgv, check username, checkpassword
-  console.log(username)
   const user = await User.findOne({username}).select('+password')
   if(!user){
     res.json({msg: 'No such user'})
@@ -62,7 +48,7 @@ router.post('/login', async (req, res, next) => {
       res.json({msg: 'Wrong password'})
       next("Wrong password")
     } else{
-          const token = await jwt.sign({userId: user.id},TOKEN_SECRET,{
+      const token = await jwt.sign({userId: user.id},TOKEN_SECRET,{
       expiresIn: '1m'
     })
     res.cookie('auth', token, {httpOnly:true})
@@ -78,7 +64,6 @@ router.post('/register', async (req, res, next) => {
   if(user){
     res.json({msg: 'already exists'})
     next('User exists')
-    console.log('user exists, nope')
   } else{
     //argon2 for extra protecion
     const hashed = await argon2.hash(password, 10)
@@ -92,7 +77,7 @@ const authMW =async(req, res, next)=>{
   try {
       //const token = req.headers?.authorization?.replace('Bearer ', '')
       const token = req.cookies.auth
-      const {userId} = jwt.verify(token, TOKEN_SECRET)
+      jwt.verify(token, TOKEN_SECRET)
       next()
   } catch (error) {
     console.log("error at authMW")
@@ -106,12 +91,7 @@ router.get('/checklogin', authMW, async (req, res, next)=>{
 
 router.post('/membersndues', authMW, async (req, res, next)=>{
   const{user}=req.body
-  console.log("request body: ")
-  console.log(req.body)
-  console.log(user)
   const userFromDB = await User.findOne({username:user}).select('+payed')
-  //console.log(userFromDB)
-  console.log(userFromDB.payed)
   var response = (userFromDB.payed)
   res.json({msg: response})
   next()
@@ -120,12 +100,7 @@ router.post('/membersndues', authMW, async (req, res, next)=>{
 
 router.post('/newsForAPerson', authMW, async (req, res, next)=>{
   const{user}=req.body
-  console.log("request body: ")
-  console.log(req.body)
-  console.log(user)
   const userFromDB = await User.findOne({username:user}).select('+payed')
-  //console.log(userFromDB)
-  console.log(userFromDB.payed)
   var response = (userFromDB.payed)
   res.json({msg: response})
   next()
@@ -133,9 +108,6 @@ router.post('/newsForAPerson', authMW, async (req, res, next)=>{
 
 router.put('/pay', authMW, async (req, res, next)=>{
   const{user}=req.body
-  console.log("request body: ")
-  console.log(req.body)
-  console.log(user)
   const userFromDB = await User.findOne({username:user}).select('+payed')
   if(userFromDB.payed===true){
     await User.findOneAndUpdate({username:user, payed:false})
@@ -143,7 +115,6 @@ router.put('/pay', authMW, async (req, res, next)=>{
     await User.findOneAndUpdate({username:user, payed:true})
   }
   const userFromDB2 = await User.findOne({username:user}).select('+payed')
-  console.log("Pay to return is: "+userFromDB2.payed)
   res.json({msg: userFromDB2.payed})
   next()
 })
@@ -151,13 +122,8 @@ router.put('/pay', authMW, async (req, res, next)=>{
 
 router.delete('/deleteme', authMW, async (req, res, next)=>{
   const{user}=req.body
-  console.log("request body: ")
-  console.log(req.body)
-  console.log(user)
-  const userFromDB = await User.findOneAndDelete({username:user})
-  console.log(userFromDB)
-  const userFromDB2 = await User.findOne({username:user}).select('+payed')
-  console.log(userFromDB2)
+  await User.findOneAndDelete({username:user})
+  await User.findOne({username:user}).select('+payed')
   res.json({msg: "successfully"})
   next()
 })

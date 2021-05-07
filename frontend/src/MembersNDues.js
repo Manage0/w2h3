@@ -13,14 +13,11 @@ const MembersNDues = () =>{
   useEffect(() => {
     CheckLogin()
     const getData = async () => {
-      console.log("trigger is: "+trigger)
       try {
         const {
-          data: { response, news }
+          data: { news }
         } = await axios.post('/api/news', {user:outerUsername})
-        console.log(response)
-        console.log(news.news)
-        setNewsToDisplay(news.news)
+        setNewsToDisplay(news)
       } catch (error) {
         console.log(error.message)
       }
@@ -29,7 +26,6 @@ const MembersNDues = () =>{
   }, [trigger])
 
     const [payed, setPayed] = useState(false)
-    const [deleted, setDeleted] = useState(false)
 
     const GenerateNews=async()=>{
         try {
@@ -86,17 +82,9 @@ const SwitchPayed=() => {
 
   const DeleteMe=() => {
     axios.defaults.headers.authorization=tokenForAxios
-    console.log("deleteMe")
     const getData = async () => {
       try {
-          console.log("deleteme is in try"+outerUsername)
-            const {
-                data: { msg },
-            } = 
             await axios.delete('/api/deleteme',{ data: {user:outerUsername} })
-            console.log("delete gone")
-            setDeleted(msg)
-            console.log("returned value is: "+msg)
             var homeURL = window.location.href.slice(0, window.location.href.length-12)
             window.location = homeURL;
         } catch (error) {
