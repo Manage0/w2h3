@@ -91,7 +91,7 @@ const Main =()=>
                 <br/>
                 <input placeholder="Enter password here..." type="password" id="password" name="password" onChange={(e)=>setPassword(e.target.value)}/>
                 <br/>
-                <button type="button" onClick={Login}>Login (Should be clicked twice)</button> 
+                <button type="button" onClick={Login}>Login</button> 
                 <br/>
               </div>
               <div class="register">
@@ -112,7 +112,7 @@ const Main =()=>
             <div class="publicdata">
             <Link to='./public'>Public data</Link>
             <br/>
-            <Link to='./membersndues'>After login</Link>
+            <Link to='./membersndues'>After login (Should be clicked twice)</Link>
             </div>
             <div id='mainTxt'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tincidunt augue, pellentesque consectetur velit euismod congue. Aenean placerat lacus eu fringilla maximus. Donec enim ipsum, sagittis ac ultrices eu, molestie et felis. Donec eu ex nec mauris consequat euismod quis in tortor. Sed sagittis pharetra massa, ut laoreet erat venenatis in. Pellentesque commodo, turpis in vehicula condimentum, tellus sapien ornare massa, vitae tristique eros ante id mauris. Morbi a nulla non sapien fringilla malesuada.

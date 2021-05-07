@@ -97,15 +97,6 @@ router.post('/membersndues', authMW, async (req, res, next)=>{
   next()
 })
 
-
-router.post('/newsForAPerson', authMW, async (req, res, next)=>{
-  const{user}=req.body
-  const userFromDB = await User.findOne({username:user}).select('+payed')
-  var response = (userFromDB.payed)
-  res.json({msg: response})
-  next()
-})
-
 router.put('/pay', authMW, async (req, res, next)=>{
   const{user}=req.body
   const userFromDB = await User.findOne({username:user}).select('+payed')
