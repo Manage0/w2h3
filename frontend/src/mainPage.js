@@ -14,6 +14,7 @@ const Main =()=>
     const [username, setUsername] =useState()
     const [password, setPassword] =useState()
     const [init, setInit] = useState(false)
+    const [loginState, setLoginState] = useState("Not logged in")
 
     useEffect(()=>{
       const initialize = async () => {
@@ -45,13 +46,17 @@ const Main =()=>
 
     const Login = async ()=>{
         try {
-          console.log(username, password)
             const {
               data: { msg },
             } = await axios.post('/api/login',{
               username,
               password
             })
+            if(msg==="No such user" || msg==="Wrong password"){
+              setLoginState(msg)
+            } else{
+              setLoginState("Logged in")
+            }
             outerUsername=username
             axios.defaults.headers.authorization=`Bearer ${msg}`
             tokenForAxios=`Bearer ${msg}`
@@ -113,6 +118,8 @@ const Main =()=>
             <Link to='./public'>Public data</Link>
             <br/>
             <Link to='./membersndues'>After login (Should be clicked twice)</Link>
+            <br/>
+            {loginState}
             </div>
             <div id='mainTxt'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tincidunt augue, pellentesque consectetur velit euismod congue. Aenean placerat lacus eu fringilla maximus. Donec enim ipsum, sagittis ac ultrices eu, molestie et felis. Donec eu ex nec mauris consequat euismod quis in tortor. Sed sagittis pharetra massa, ut laoreet erat venenatis in. Pellentesque commodo, turpis in vehicula condimentum, tellus sapien ornare massa, vitae tristique eros ante id mauris. Morbi a nulla non sapien fringilla malesuada.
