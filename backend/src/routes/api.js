@@ -1,5 +1,5 @@
 import pkg from 'express'
-import argon2 from 'argon2'
+import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
 import {User, News} from './MongoModels.js'
@@ -31,10 +31,10 @@ router.post('/login', async (req, res, next) => {
     res.json({msg: 'No such user'})
     next("No such user")
   } else{
-    const match = await argon2.verify(user.password, password)
+    const match = await bcrypt.compare(password, user.password)
     if(!match){
       res.json({msg: 'Wrong password'})
-      next("Wrong password")
+      next()
     } else{
       const token = await jwt.sign({userId: user.id},TOKEN_SECRET,{
       expiresIn: '1m'
@@ -52,8 +52,8 @@ router.post('/register', async (req, res, next) => {
     res.json({msg: 'already exists'})
     next('User exists')
   } else{
-    //argon2 for extra protecion
-    const hashed = await argon2.hash(password, 10)
+    //argon2 for extra protecion... -> it was, but heroku said NOPE :'(
+    const hashed = await bcrypt.hash(password, 10)
     const Created = await User.create({username, password: hashed, payed: false})
     res.json({msg: Created.id})
   }
